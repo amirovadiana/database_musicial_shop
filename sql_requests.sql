@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS artist(
 CREATE TABLE IF NOT EXISTS album(
 	album_id serial PRIMARY KEY,
 	album_name varchar(160) NOT NULL,
-	release_year date NOT NULL
+	release_year date NOT NULL CHECK (release_year>'1999-12-31')
 );
 
 CREATE TABLE IF NOT EXISTS treck(
@@ -22,11 +22,10 @@ CREATE TABLE IF NOT EXISTS genre(
 	genre_name varchar(160) NOT NULL
 );
 
-
 CREATE TABLE IF NOT EXISTS collection(
 	collection_id serial PRIMARY KEY,
 	collection_name varchar(160) NOT NULL,
-	release_year date NOT NULL CHECK (release_year>'1999-12-31')
+	release_year date NOT NULL CHECK (release_year>'2009-12-31')
 );
 
 CREATE TABLE IF NOT EXISTS treck_collection(
