@@ -3,19 +3,18 @@ CREATE TABLE IF NOT EXISTS artist(
     artist_name varchar(100) NOT  NULL
 );
 
-CREATE TABLE IF NOT EXISTS treck(
-	treck_id serial PRIMARY KEY,
-	treck_name varchar(160) NOT NULL,
-	duration NUMERIC(10, 2) NOT NULL
-);
-
-
 CREATE TABLE IF NOT EXISTS album(
 	album_id serial PRIMARY KEY,
 	album_name varchar(160) NOT NULL,
-	release_year date NOT NULL,
-	treck_id int UNIQUE,
-	CONSTRAINT treck_ FOREIGN KEY(treck_id) REFERENCES treck(treck_id)
+	release_year date NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS treck(
+	treck_id SMALLINT PRIMARY KEY,
+	treck_name varchar(160) NOT NULL,
+	duration int NOT NULL CHECK (duration>60),
+	album_id int NOT NULL,
+	CONSTRAINT album_fk FOREIGN KEY(album_id) REFERENCES album(album_id)
 );
 
 CREATE TABLE IF NOT EXISTS genre(
@@ -27,9 +26,15 @@ CREATE TABLE IF NOT EXISTS genre(
 CREATE TABLE IF NOT EXISTS collection(
 	collection_id serial PRIMARY KEY,
 	collection_name varchar(160) NOT NULL,
-	release_year date NOT NULL,
-	treck_id int NOT NULL,
-	CONSTRAINT treck_c FOREIGN KEY(treck_id) REFERENCES treck(treck_id)
+	release_year date NOT NULL CHECK (release_year>'1999-12-31')
+);
+
+CREATE TABLE IF NOT EXISTS treck_collection(
+	track_collection_id serial PRIMARY KEY,
+	treck_id SMALLINT NOT NULL,
+	collection_id INT NOT NULL,
+	CONSTRAINT treck_c FOREIGN KEY(treck_id) REFERENCES treck(treck_id),
+	CONSTRAINT collection_t FOREIGN KEY(collection_id) REFERENCES collection(collection_id)
 );
 
 CREATE TABLE IF NOT EXISTS artist_genre(
